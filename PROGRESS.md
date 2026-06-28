@@ -189,10 +189,42 @@ component state. No backend, no styling framework yet.
 
 **Chunks**
 
-- [ ] Define a `Patient` type and a `patients` mock array
-- [ ] Build a `PatientCard` component (shows one patient)
-- [ ] Build a `PatientList` component (maps over patients -> cards)
-- [ ] Render the list from `App`
+- [x] Define a `Patient` type (`types.ts`) and a `patients` mock array (`data/patients.ts`)
+- [x] Build a `PatientCard` component (shows one patient)
+- [x] Build a `PatientList` component (maps over patients -> cards)
+- [x] Render the list from `App`
+- [ ] Commit + push
+
+**Done**
+
+- Created `Patient` type, 6 mock patients, `PatientCard`, and a prop-driven
+  `PatientList`; `App` owns the data and passes it down. List renders.
+
+**Learned**
+
+- `.ts` vs `.tsx`: any file containing JSX must be `.tsx`. A component written
+  in `.ts` threw a wall of errors because TS read `<div>` as a type assertion.
+- Data flows DOWN via props. A child should receive data as a prop, not import
+  it itself — that keeps it reusable and sets up lifting state later.
+- Don't nest block components inside an `<h1>`: heading styles cascade onto
+  everything (giant bold text) and it's invalid HTML. One `<h1>` per page.
+- List items need a stable `key` so React can track them efficiently.
+
+**Blockers / questions**
+
+- (resolved) Bug 1: component saved as `.ts` not `.tsx`. Bug 2: `<PatientList>`
+  nested inside `<h1>` made the whole list render huge.
+
+---
+
+### Task 3 — Select a patient + visit-note form
+
+**Chunks**
+
+- [ ] Lift "selected patient" state into `App` with `useState`
+- [ ] Make `PatientCard`/`PatientList` clickable (pass a select handler down)
+- [ ] Build an empty `VisitNoteForm` (controlled inputs) for the selected patient
+- [ ] Commit + push
 
 **Done**
 
