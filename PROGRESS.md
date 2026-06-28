@@ -148,3 +148,60 @@ rhythm to reuse.
 
 **Next up — Week 1:** build a static doctor dashboard with mock data in
 `client/`. No backend yet.
+
+═══════════════════════════════════════════════════════════════════════
+
+# Week 1 — Static Doctor Dashboard (Sun 2026-06-28 → Sat 2026-07-04)
+
+Goal: a clickable React + TypeScript app in `client/` showing fake patients —
+a patient list, a patient card, and an empty visit-note form. All data lives in
+component state. No backend, no styling framework yet.
+
+### Task 1 — Scaffold the React app
+
+**Chunks**
+
+- [x] Scaffold Vite (react-ts) into `client/`
+- [x] Confirm it joins the pnpm workspace (`pnpm install` at root)
+- [x] Run the dev server and see it in the browser
+- [x] Strip the Vite demo boilerplate down to a clean starting point
+
+**Done**
+
+- Scaffolded Vite 8 + React 19 + TypeScript into `client/` (chose ESLint, kept README).
+- Dev server runs at `http://localhost:5173/`; cleaned `App.tsx`/`index.css`,
+  removed demo assets, set the page title to "Clinica".
+
+**Learned**
+
+- The entry chain: `index.html` (has `#root`) -> `main.tsx` (mounts `<App />`)
+  -> `App.tsx` (where I actually build). I only ever touch `App.tsx` and down.
+- A linter (ESLint here) statically checks code for likely bugs/bad patterns
+  without running it; chose ESLint over Oxlint for its mature React ecosystem.
+
+**Blockers / questions**
+
+- (none)
+
+---
+
+### Task 2 — Mock patients + patient list
+
+**Chunks**
+
+- [ ] Define a `Patient` type and a `patients` mock array
+- [ ] Build a `PatientCard` component (shows one patient)
+- [ ] Build a `PatientList` component (maps over patients -> cards)
+- [ ] Render the list from `App`
+
+**Done**
+
+-
+
+**Learned**
+
+-
+
+**Blockers / questions**
+
+-
