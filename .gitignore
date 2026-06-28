@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+pnpm-debug.log*
+
+# OS / editor cruft
+.DS_Store
+.idea/
+.vscode/
+
+# test coverage
+coverage/
