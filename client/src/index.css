@@ -1,8 +1,8 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  color: #213547;
-  background-color: #ffffff;
+  color: #1f2937;
+  background-color: #f8fafc;
 }
 
 * {
@@ -11,5 +11,99 @@
 
 body {
   margin: 0;
-  padding: 1rem;
+}
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.app header p {
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.layout {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  align-items: flex-start;
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.main {
+  flex: 1.2;
+}
+
+.patient-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  background: #fff;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.patient-card:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.patient-card h3 {
+  margin: 0 0 0.25rem;
+}
+
+.patient-card p {
+  margin: 0.1rem 0;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+form {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  background: #fff;
+}
+
+form h3 {
+  margin-top: 0;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin: 0.75rem 0 0.25rem;
+  font-size: 0.9rem;
+}
+
+form textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font: inherit;
+  resize: vertical;
+}
+
+form button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+
+form button:hover {
+  background: #1d4ed8;
 }

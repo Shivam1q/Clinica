@@ -23,22 +23,25 @@ const VisitNoteForm = ({ patient }: VisitNoteFormProps) => {
     <form onSubmit={handleSubmit}>
       <h3>New visit note for {patient.name}</h3>
       <div>
-        <label>Complaint</label>
+        <label htmlFor="complaint">Complaint</label>
         <textarea
+          id="complaint"
           value={complaint}
           onChange={(e) => setComplaint(e.target.value)}
         />
       </div>
       <div>
-        <label>Diagnosis</label>
+        <label htmlFor="diagnosis">Diagnosis</label>
         <textarea
+          id="diagnosis"
           value={diagnosis}
           onChange={(e) => setDiagnosis(e.target.value)}
         />
       </div>
       <div>
-        <label>Treatment</label>
+        <label htmlFor="treatment">Treatment</label>
         <textarea
+          id="treatment"
           value={treatment}
           onChange={(e) => setTreatment(e.target.value)}
         />
