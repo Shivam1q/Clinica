@@ -224,7 +224,7 @@ component state. No backend, no styling framework yet.
 - [x] Lift "selected patient" state into `App` with `useState`
 - [x] Make `PatientCard`/`PatientList` clickable (pass a select handler down)
 - [x] Build an empty `VisitNoteForm` (controlled inputs) for the selected patient
-- [ ] Commit + push
+- [x] Commit + push
 
 **Done**
 
@@ -249,3 +249,59 @@ component state. No backend, no styling framework yet.
 **Blockers / questions**
 
 - (none)
+
+---
+
+### Task 4 — Polish & wrap
+
+**Chunks**
+
+- [ ] Two-panel flex layout (patient list + visit-note form) with light CSS
+- [ ] Cleanups: link `<label>`s to textareas, delete leftover demo assets
+- [ ] Rewrite `client/README.md`
+- [ ] Final commit + Week 1 retro
+
+**Done**
+
+- Built a centered two-panel dashboard with flexbox (sidebar list + main form),
+  card hover, styled form. Looks like a real product.
+- Linked labels via `htmlFor`/`id`; removed `hero.png` and `icons.svg`.
+- Rewrote the client README.
+
+**Learned**
+
+- Flexbox is the backbone of dashboard layout: `display: flex` + `flex` ratios
+  arrange panels side by side.
+- A ternary (`selected ? <Form/> : <hint/>`) renders an empty-state fallback
+  instead of a blank panel.
+- `htmlFor` is React's name for HTML's `for` (since `for` is reserved in JS);
+  it links a label to its input so clicking the label focuses the field.
+
+**Blockers / questions**
+
+- (none)
+
+---
+
+## Week 1 — Retro
+
+**What I shipped:** a clickable, static doctor dashboard in `client/` (React +
+TypeScript, Vite) — a patient list of mock data, click-to-select, and an
+editable complaint/diagnosis/treatment visit-note form. No backend.
+
+**Biggest lessons:**
+
+- `.ts` vs `.tsx`, and when TypeScript can infer a type vs when I must annotate
+  (state, props, events).
+- The core React pattern: data flows DOWN via props, events flow UP via callback
+  props; shared state lives in the closest common parent ("lifting state up").
+- Controlled inputs make state the source of truth — the foundation for AI
+  pre-filling the note later.
+
+**How I broke the work down:** scaffold the app -> model data + render the list
+-> add interaction (selection) + the form -> polish + document. Each task ended
+with a commit.
+
+**Next up — Week 2:** wire the dashboard to a fake REST API (json-server) so it
+reads/writes patients and visits over HTTP, with loading/error states and
+notifications. The form skeleton from this week is where that plugs in.
