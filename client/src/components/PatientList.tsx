@@ -3,13 +3,14 @@ import PatientCard from "./PatientCard";
 
 interface PatientListProps {
   patients: Patient[];
+  onSelect: (patient: Patient) => void;
 }
 
-const PatientList = ({ patients }: PatientListProps) => {
+const PatientList = ({ patients, onSelect }: PatientListProps) => {
   return (
     <div>
       {patients.map((patient) => (
-        <PatientCard key={patient.id} patient={patient} />
+        <PatientCard key={patient.id} patient={patient} onSelect={onSelect} />
       ))}
     </div>
   );

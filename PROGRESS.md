@@ -193,7 +193,7 @@ component state. No backend, no styling framework yet.
 - [x] Build a `PatientCard` component (shows one patient)
 - [x] Build a `PatientList` component (maps over patients -> cards)
 - [x] Render the list from `App`
-- [ ] Commit + push
+- [x] Commit + push
 
 **Done**
 
@@ -221,19 +221,31 @@ component state. No backend, no styling framework yet.
 
 **Chunks**
 
-- [ ] Lift "selected patient" state into `App` with `useState`
-- [ ] Make `PatientCard`/`PatientList` clickable (pass a select handler down)
-- [ ] Build an empty `VisitNoteForm` (controlled inputs) for the selected patient
+- [x] Lift "selected patient" state into `App` with `useState`
+- [x] Make `PatientCard`/`PatientList` clickable (pass a select handler down)
+- [x] Build an empty `VisitNoteForm` (controlled inputs) for the selected patient
 - [ ] Commit + push
 
 **Done**
 
--
+- `App` owns `selected` state; clicking a card selects that patient (handler
+  threaded App -> PatientList -> PatientCard).
+- `VisitNoteForm` has 3 controlled textareas (complaint/diagnosis/treatment),
+  a typed submit that mock-saves via `console.log` and resets the fields.
+- Form renders only for the selected patient (conditional render).
 
 **Learned**
 
--
+- Lifting state up: when two components need the same state, put it in their
+  common parent. Data flows DOWN as props, events flow UP via callback props.
+- Controlled inputs: `value` + `onChange` make React state the single source of
+  truth — which is what lets AI pre-fill these fields later (Week 6).
+- Event typing: annotate the submit handler `React.FormEvent<HTMLFormElement>`;
+  inline `onChange` handlers infer their event type automatically.
+- `useState("")` infers `string` — only add a generic when inference can't
+  (e.g. `useState<Patient | null>(null)`).
+- `event.preventDefault()` stops the default full-page reload on form submit.
 
 **Blockers / questions**
 
--
+- (none)
