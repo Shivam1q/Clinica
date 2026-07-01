@@ -305,3 +305,39 @@ with a commit.
 **Next up — Week 2:** wire the dashboard to a fake REST API (json-server) so it
 reads/writes patients and visits over HTTP, with loading/error states and
 notifications. The form skeleton from this week is where that plugs in.
+
+═══════════════════════════════════════════════════════════════════════
+
+# Week 2 — Mock REST API + Data Fetching (Sun 2026-06-28 → Sat 2026-07-04)
+
+Goal: the dashboard reads and writes patients & visits to a fake REST API
+(json-server) over HTTP, with loading/error states, validated forms, and
+success/error notifications. Still no real backend (that is Week 4).
+
+### Task 1 — Stand up the fake API
+
+**Chunks**
+
+- [x] Install `json-server` (dev) and `axios` in the client
+- [x] Create `client/db.json` seeded with patients + an empty visits list
+- [x] Add a script to run json-server and verify the endpoints
+- [ ] Commit + push
+
+**Done**
+
+- Added `axios` (runtime dep) and `json-server` (dev dep); created `db.json`
+  with 6 patients + empty `visits`; `server` script serves it on port 3001.
+- Verified `GET /patients` and `/patients/1` over HTTP.
+
+**Learned**
+
+- json-server turns a JSON file into a full REST API — each top-level key
+  (`patients`, `visits`) becomes an endpoint. Zero backend code.
+- Two dev servers run in parallel: Vite (5173, serves the app) and json-server
+  (3001, serves the data). The app will fetch across to 3001.
+- Runtime dep vs dev dep: `axios` ships inside the app; `json-server` is tooling
+  only, so it's installed with `-D`.
+
+**Blockers / questions**
+
+- (none)
