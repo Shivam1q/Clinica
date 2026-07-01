@@ -341,3 +341,32 @@ success/error notifications. Still no real backend (that is Week 4).
 **Blockers / questions**
 
 - (none)
+
+---
+
+### Task 2 — Fetch patients from the API
+
+**Chunks**
+
+- [x] Create an axios service module (`services/patients.ts`, typed responses)
+- [x] Fetch in `App` with `useEffect` + loading/error state
+- [ ] Commit + push
+
+**Done**
+
+- `getAllPatients()` service uses `axios.get<Patient[]>`; `App` fetches on mount
+  and renders loading -> list, or an error message if the API is down.
+- Data now comes over HTTP from json-server, not the hardcoded array.
+
+**Learned**
+
+- `useEffect(fn, [])` runs once after the first render — the right place for
+  side effects like fetching.
+- The component renders BEFORE data arrives: it starts empty + loading, then the
+  promise resolves, state updates, and React re-renders with the data.
+- Typing the axios call (`axios.get<Patient[]>`) makes `response.data` typed.
+- Keep HTTP in a `services/` module so components stay about UI.
+
+**Blockers / questions**
+
+- (none)
