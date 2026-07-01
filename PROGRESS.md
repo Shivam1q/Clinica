@@ -370,3 +370,34 @@ success/error notifications. Still no real backend (that is Week 4).
 **Blockers / questions**
 
 - (none)
+
+---
+
+### Task 3 — Create patient + create visit (POST)
+
+**Chunks**
+
+- [x] Add `Visit` type + `createPatient`/`createVisit` services (Omit payloads)
+- [x] `NewPatientForm` (select + numeric input) wired into `App`
+- [x] `VisitNoteForm` submit POSTs a visit
+- [ ] Commit + push
+
+**Done**
+
+- Adding a patient POSTs to `/patients`, appears in the list, and persists.
+- Saving a note POSTs to `/visits` with a server-assigned `id`.
+
+**Learned**
+
+- `axios.post<T>` writes data; the server assigns the `id`, so create payloads
+  use `Omit<T, "id">` (the type minus a field).
+- Indexed access `Patient["sex"]` = the type of that field (the union) — reuse it
+  so options stay in sync with the source type.
+- Inputs always give strings — convert `age` with `Number()` before sending.
+- Immutable state update: `setPatients(patients.concat(created))` returns a NEW
+  array instead of mutating the old one.
+- No validation yet, so `age: 2242` saved happily — motivates Task 4.
+
+**Blockers / questions**
+
+- (none)
