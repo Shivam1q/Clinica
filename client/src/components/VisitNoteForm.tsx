@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Patient } from "../types";
+import { createVisit } from "../services/visits";
 
 interface VisitNoteFormProps {
   patient: Patient;
@@ -10,13 +11,16 @@ const VisitNoteForm = ({ patient }: VisitNoteFormProps) => {
   const [diagnosis, setDiagnosis] = useState<string>("");
   const [treatment, setTreatment] = useState<string>("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const note = { patientId: patient.id, complaint, diagnosis, treatment };
-    console.log("Visit note saved (mock):", note);
-    setComplaint("");
-    setDiagnosis("");
-    setTreatment("");
+    await createVisit({
+      patientId: patient.id,
+      complaint,
+      diagnosis,
+      treatment,
+      date: new Date().toISOString(),
+    });
+    setComplaint(""); setDiagnosis(""); setTreatment("");
   };
 
   return (

@@ -3,6 +3,8 @@ import type { Patient } from "./types";
 import { getAllPatients } from "./services/patients";
 import PatientList from "./components/PatientList";
 import VisitNoteForm from "./components/VisitNoteForm";
+import { createPatient } from "./services/patients";
+import NewPatientForm from "./components/NewPatientForm";
 
 const App = () => {
   const [selected, setSelected] = useState<Patient | null>(null);
@@ -17,6 +19,11 @@ const App = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleAddPatient = async (fields: Omit<Patient, "id">) => {
+    const created = await createPatient(fields);
+    setPatients(patients.concat(created));
+  };
+
   return (
     <div className="app">
       <header>
@@ -26,6 +33,7 @@ const App = () => {
 
       <div className="layout">
         <section className="sidebar">
+          <NewPatientForm onAdd={handleAddPatient} />
           <h2>Patients</h2>
           {loading && <p>Loading patients…</p>}
           {error && <p className="error">{error}</p>}

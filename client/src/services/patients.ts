@@ -7,3 +7,10 @@ export const getAllPatients = async (): Promise<Patient[]> => {
   const response = await axios.get<Patient[]>(baseUrl);
   return response.data;
 };
+
+export const createPatient = async (
+  patient: Omit<Patient, "id">,
+): Promise<Patient> => {
+  const response = await axios.post<Patient>(baseUrl, patient);
+  return response.data;
+};

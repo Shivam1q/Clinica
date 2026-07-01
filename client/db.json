@@ -47,7 +47,24 @@
       "sex": "female",
       "phone": "+91 90021 00001",
       "lastVisit": "2026-06-10"
+    },
+    {
+      "name": "Shivam Yadav",
+      "age": 2242,
+      "sex": "male",
+      "phone": "6397556533",
+      "id": "hAW8mj3jpcY"
     }
   ],
-  "visits": []
+  "visits": [
+    {
+      "patientId": "hAW8mj3jpcY",
+      "complaint": "edghdh",
+      "diagnosis": "dsgd",
+      "treatment": "sgd",
+      "date": "2026-07-01T13:08:28.439Z",
+      "id": "7abato6gnL8"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
