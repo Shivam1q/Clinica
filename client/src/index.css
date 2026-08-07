@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #1a1f2b;
+  background: #f4f6f8;
+}
+
+.dashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+}
+
+.dashboard-header p {
+  margin: 0;
+  color: #5b6472;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-section h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.patient-card,
+.appointment-row {
+  background: #fff;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.patient-card h3,
+.appointment-row h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.patient-card p,
+.appointment-row p {
+  margin: 2px 0;
+  color: #5b6472;
+  font-size: 0.9rem;
+}
+
+.visit-note-panel {
+  background: #fff;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.visit-note-panel h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.empty-state {
+  margin: 0;
+  color: #5b6472;
+}
