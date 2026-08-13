@@ -51,6 +51,121 @@ body {
   font-size: 1.1rem;
 }
 
+.section-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.section-heading-row h2 {
+  margin: 0;
+}
+
+.patient-list {
+  display: grid;
+  gap: 10px;
+}
+
+.search-field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.search-label {
+  font-size: 0.85rem;
+  color: #5b6472;
+}
+
+.search-field input {
+  width: 100%;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font: inherit;
+  color: #1a1f2b;
+  background: #fff;
+}
+
+.search-field input:focus {
+  outline: 2px solid #2f6fed;
+  outline-offset: 1px;
+  border-color: #2f6fed;
+}
+
+.patient-form-panel {
+  background: #fff;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.patient-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.patient-form-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.patient-form {
+  display: grid;
+  gap: 12px;
+}
+
+.form-field {
+  display: grid;
+  gap: 6px;
+}
+
+.form-field label {
+  font-size: 0.85rem;
+  color: #5b6472;
+}
+
+.form-field input {
+  width: 100%;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font: inherit;
+  color: #1a1f2b;
+  background: #fafbfc;
+}
+
+.form-field input:focus {
+  outline: 2px solid #2f6fed;
+  outline-offset: 1px;
+  border-color: #2f6fed;
+  background: #fff;
+}
+
+.form-error {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fdecec;
+  color: #9b1c1c;
+  font-size: 0.9rem;
+}
+
+.form-success {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #e8f6ee;
+  color: #146c43;
+  font-size: 0.9rem;
+}
+
 .patient-card,
 .appointment-row {
   background: #fff;

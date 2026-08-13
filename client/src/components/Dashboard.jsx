@@ -1,14 +1,31 @@
-import PatientCard from "./PatientCard";
+import { useState } from "react";
 import AppointmentRow from "./AppointmentRow";
 import PatientTimeline from "./PatientTimeline";
 import VisitNotePanel from "./VisitNotePanel";
-import { useState } from "react";
+import PatientForm from "./PatientForm";
+import PatientList from "./PatientList";
 
-const Dashboard = ({ patients, todaysAppointments, visits }) => {
+const Dashboard = ({
+  patients,
+  todaysAppointments,
+  visits,
+  onAddPatient,
+  query,
+  setQuery,
+}) => {
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
-  const handleClick = (id) => {
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredPatients = patients.filter((patient) => {
+    if (!normalizedQuery) return true;
+    const name = patient.name.toLowerCase();
+    const phone = String(patient.phone);
+    return name.includes(normalizedQuery) || phone.includes(normalizedQuery);
+  });
+
+  const handleSelectPatient = (id) => {
     setSelectedPatientId(id);
     setIsNoteOpen(false);
   };
@@ -35,19 +52,37 @@ const Dashboard = ({ patients, todaysAppointments, visits }) => {
         </section>
 
         <section className="dashboard-section">
-          <h2>Patients</h2>
-          {patients.map((patient) => (
-            <PatientCard
-              key={patient.id}
-              patient={patient}
-              handleClick={handleClick}
-              selectedPatientId={selectedPatientId}
-            />
-          ))}
+          <div className="section-heading-row">
+            <h2>Patients</h2>
+            <button
+              type="button"
+              className="btn"
+              onClick={() => setShowAddForm((open) => !open)}
+            >
+              {showAddForm ? "Hide form" : "Add patient"}
+            </button>
+          </div>
+
+          {showAddForm ? (
+            <PatientForm onAddPatient={onAddPatient} />
+          ) : null}
+
+          <PatientList
+            patients={filteredPatients}
+            totalCount={patients.length}
+            query={query}
+            setQuery={setQuery}
+            selectedPatientId={selectedPatientId}
+            onSelectPatient={handleSelectPatient}
+          />
         </section>
       </div>
 
-      <PatientTimeline selectedPatientId={selectedPatientId} patients={patients} visits={visits} />
+      <PatientTimeline
+        selectedPatientId={selectedPatientId}
+        patients={patients}
+        visits={visits}
+      />
       <VisitNotePanel
         selectedPatientId={selectedPatientId}
         isNoteOpen={isNoteOpen}
