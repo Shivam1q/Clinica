@@ -12,6 +12,8 @@ const Dashboard = ({
   onAddPatient,
   query,
   setQuery,
+  isLoading,
+  error,
 }) => {
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
@@ -58,23 +60,34 @@ const Dashboard = ({
               type="button"
               className="btn"
               onClick={() => setShowAddForm((open) => !open)}
+              disabled={isLoading}
             >
               {showAddForm ? "Hide form" : "Add patient"}
             </button>
           </div>
 
-          {showAddForm ? (
-            <PatientForm onAddPatient={onAddPatient} />
+          {error ? (
+            <p className="api-error" role="alert">
+              {error}
+            </p>
           ) : null}
 
-          <PatientList
-            patients={filteredPatients}
-            totalCount={patients.length}
-            query={query}
-            setQuery={setQuery}
-            selectedPatientId={selectedPatientId}
-            onSelectPatient={handleSelectPatient}
-          />
+          {showAddForm ? (
+            <PatientForm onAddPatient={onAddPatient} disabled={Boolean(error)} />
+          ) : null}
+
+          {isLoading ? (
+            <p className="loading-state">Loading patients…</p>
+          ) : (
+            <PatientList
+              patients={filteredPatients}
+              totalCount={patients.length}
+              query={query}
+              setQuery={setQuery}
+              selectedPatientId={selectedPatientId}
+              onSelectPatient={handleSelectPatient}
+            />
+          )}
         </section>
       </div>
 

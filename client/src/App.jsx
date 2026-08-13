@@ -1,13 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
-import { patients as seedPatients, todaysAppointments, visits } from "./data/mock";
+import { getPatients, createPatient } from "./api/patients";
+import { todaysAppointments, visits } from "./data/mock";
 
 const App = () => {
-  const [patients, setPatients] = useState(seedPatients);
+  const [patients, setPatients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
 
-  const handleAddPatient = (patient) => {
-    setPatients((current) => [...current, patient]);
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPatients() {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const data = await getPatients();
+        if (!cancelled) {
+          setPatients(data);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err.message ||
+              "Could not reach the API. Is json-server running?",
+          );
+          setPatients([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadPatients();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleAddPatient = async (patient) => {
+    const created = await createPatient(patient);
+    setPatients((current) => [...current, created]);
+    return created;
   };
 
   return (
@@ -18,6 +57,8 @@ const App = () => {
       visits={visits}
       query={query}
       setQuery={setQuery}
+      isLoading={isLoading}
+      error={error}
     />
   );
 };

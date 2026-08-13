@@ -337,3 +337,29 @@ body {
   color: #8a93a0;
   font-size: 0.95rem;
 }
+
+.loading-state {
+  margin: 0;
+  padding: 12px 0;
+  color: #5b6472;
+  font-size: 0.95rem;
+}
+
+.api-error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fdecec;
+  color: #9b1c1c;
+  font-size: 0.9rem;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-field input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

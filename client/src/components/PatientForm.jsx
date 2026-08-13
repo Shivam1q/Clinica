@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-const PatientForm = ({ onAddPatient }) => {
+const PatientForm = ({ onAddPatient, disabled = false }) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [age, setAge] = useState("");
   const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const resetFields = () => {
     setName("");
@@ -13,7 +14,7 @@ const PatientForm = ({ onAddPatient }) => {
     setAge("");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setSuccessMessage("");
 
@@ -36,17 +37,24 @@ const PatientForm = ({ onAddPatient }) => {
       return;
     }
 
-    onAddPatient({
-      id: `P${Date.now()}`,
-      name: trimmedName,
-      phone: digitsOnlyPhone,
-      age: parsedAge ?? "",
-      lastVisit: "—",
-    });
-
+    setIsSubmitting(true);
     setFormError("");
-    setSuccessMessage("Patient added successfully.");
-    resetFields();
+
+    try {
+      await onAddPatient({
+        id: `P${Date.now()}`,
+        name: trimmedName,
+        phone: digitsOnlyPhone,
+        age: parsedAge ?? "",
+        lastVisit: "—",
+      });
+      setSuccessMessage("Patient added successfully.");
+      resetFields();
+    } catch (err) {
+      setFormError(err.message || "Could not save patient. Is json-server running?");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -63,6 +71,7 @@ const PatientForm = ({ onAddPatient }) => {
             name="name"
             type="text"
             value={name}
+            disabled={disabled || isSubmitting}
             onChange={(e) => {
               setName(e.target.value);
               setFormError("");
@@ -81,6 +90,7 @@ const PatientForm = ({ onAddPatient }) => {
             type="text"
             inputMode="numeric"
             value={age}
+            disabled={disabled || isSubmitting}
             onChange={(e) => {
               setAge(e.target.value);
               setFormError("");
@@ -98,6 +108,7 @@ const PatientForm = ({ onAddPatient }) => {
             type="text"
             inputMode="tel"
             value={phone}
+            disabled={disabled || isSubmitting}
             onChange={(e) => {
               setPhone(e.target.value);
               setFormError("");
@@ -111,8 +122,8 @@ const PatientForm = ({ onAddPatient }) => {
         {formError ? <p className="form-error">{formError}</p> : null}
         {successMessage ? <p className="form-success">{successMessage}</p> : null}
 
-        <button type="submit" className="btn">
-          Add patient
+        <button type="submit" className="btn" disabled={disabled || isSubmitting}>
+          {isSubmitting ? "Saving…" : "Add patient"}
         </button>
       </form>
     </section>
