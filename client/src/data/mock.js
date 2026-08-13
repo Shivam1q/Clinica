@@ -75,3 +75,72 @@ export const todaysAppointments = [
     reason: "Vaccination",
   },
 ];
+
+export const visits = [
+  {
+    id: "V001",
+    patientId: "P001",
+    date: "2026-07-28",
+    summary: "Viral fever — advised rest and fluids",
+  },
+  {
+    id: "V002",
+    patientId: "P001",
+    date: "2026-06-10",
+    summary: "Follow-up after cough — improving",
+  },
+  {
+    id: "V003",
+    patientId: "P002",
+    date: "2026-08-01",
+    summary: "Annual check-up — labs within normal range",
+  },
+  {
+    id: "V004",
+    patientId: "P002",
+    date: "2026-05-14",
+    summary: "Migraine review — continue preventive meds",
+  },
+  {
+    id: "V005",
+    patientId: "P003",
+    date: "2026-07-18",
+    summary: "Knee pain — physiotherapy recommended",
+  },
+  {
+    id: "V006",
+    patientId: "P004",
+    date: "2026-08-04",
+    summary: "Vaccination visit — no adverse reaction",
+  },
+  {
+    id: "V007",
+    patientId: "P004",
+    date: "2026-03-22",
+    summary: "Seasonal allergy consult",
+  },
+  {
+    id: "V008",
+    patientId: "P005",
+    date: "2026-08-02",
+    summary: "BP follow-up — continue current medication",
+  },
+  {
+    id: "V009",
+    patientId: "P005",
+    date: "2026-04-09",
+    summary: "New hypertension diagnosis — started amlodipine",
+  },
+  {
+    id: "V010",
+    patientId: "P006",
+    date: "2026-08-06",
+    summary: "Diabetes review — adjust diet plan",
+  },
+  {
+    id: "V011",
+    patientId: "P006",
+    date: "2026-05-30",
+    summary: "HbA1c check — slightly elevated",
+  },
+];

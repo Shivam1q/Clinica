@@ -7,6 +7,7 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
   color: #1a1f2b;
   background: #f4f6f8;
+  line-height: 1.45;
 }
 
 .dashboard {
@@ -16,12 +17,15 @@ body {
 }
 
 .dashboard-header {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e7ee;
 }
 
 .dashboard-header h1 {
   margin: 0 0 4px;
   font-size: 1.75rem;
+  letter-spacing: -0.02em;
 }
 
 .dashboard-header p {
@@ -56,32 +60,165 @@ body {
   margin-bottom: 10px;
 }
 
+.patient-card {
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.patient-card:hover {
+  border-color: #9aa7b8;
+}
+
+.patient-card.is-selected {
+  border-color: #2f6fed;
+  background: #f3f7ff;
+  box-shadow: 0 0 0 1px #2f6fed;
+}
+
 .patient-card h3,
 .appointment-row h3 {
-  margin: 0 0 6px;
+  margin: 0;
   font-size: 1rem;
 }
 
-.patient-card p,
+.patient-card-hint,
 .appointment-row p {
-  margin: 2px 0;
+  margin: 4px 0 0;
   color: #5b6472;
   font-size: 0.9rem;
 }
 
+.patient-timeline,
 .visit-note-panel {
   background: #fff;
   border: 1px solid #d9dee5;
   border-radius: 8px;
-  padding: 16px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
 }
 
+.patient-timeline h2,
 .visit-note-panel h2 {
-  margin: 0 0 8px;
+  margin: 0 0 12px;
   font-size: 1.1rem;
+}
+
+.patient-meta {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 16px;
+}
+
+.patient-meta h3 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+}
+
+.patient-meta p {
+  margin: 0;
+  color: #5b6472;
+  font-size: 0.95rem;
+}
+
+.timeline-subheading {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #1a1f2b;
+}
+
+.visit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.visit-list li {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid #e8ecf1;
+  padding: 12px 0;
+}
+
+.visit-list li:last-child {
+  padding-bottom: 0;
+}
+
+.visit-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2f6fed;
+}
+
+.visit-summary {
+  color: #5b6472;
+  font-size: 0.9rem;
+}
+
+.visit-note-panel p {
+  margin: 0;
+  color: #5b6472;
+  font-size: 0.95rem;
+}
+
+.visit-note-actions,
+.visit-note-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.visit-note-label {
+  font-size: 0.85rem;
+  color: #5b6472;
+}
+
+.visit-note-textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #d9dee5;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  color: #1a1f2b;
+  background: #fafbfc;
+}
+
+.visit-note-textarea:focus {
+  outline: 2px solid #2f6fed;
+  outline-offset: 1px;
+  border-color: #2f6fed;
+  background: #fff;
+}
+
+.btn {
+  justify-self: start;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background: #2f6fed;
+  color: #fff;
+}
+
+.btn:hover {
+  background: #2458c5;
+}
+
+.btn-secondary {
+  background: #eef1f5;
+  color: #1a1f2b;
+}
+
+.btn-secondary:hover {
+  background: #e0e5ec;
 }
 
 .empty-state {
   margin: 0;
-  color: #5b6472;
+  color: #8a93a0;
+  font-size: 0.95rem;
 }

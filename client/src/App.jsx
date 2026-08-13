@@ -1,9 +1,9 @@
 import Dashboard from "./components/Dashboard";
-import { patients, todaysAppointments } from "./data/mock";
+import { patients, todaysAppointments, visits } from "./data/mock";
 
 const App = () => {
   return (
-    <Dashboard patients={patients} todaysAppointments={todaysAppointments} />
+    <Dashboard patients={patients} todaysAppointments={todaysAppointments} visits={visits} />
   );
 };
 
