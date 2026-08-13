@@ -1,0 +1,62 @@
+// Prisma 7: DATABASE_URL lives in prisma.config.ts / .env — not here.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  role         String     @default("doctor")
+  createdAt    DateTime   @default(now())
+  visits       Visit[]
+  auditLogs    AuditLog[]
+}
+
+model Patient {
+  id           String        @id @default(cuid())
+  name         String
+  age          Int           @default(0)
+  phone        String
+  lastVisit    String?
+  createdAt    DateTime      @default(now())
+  visits       Visit[]
+  appointments Appointment[]
+}
+
+model Visit {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  summary   String
+  patientId String
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  time        String
+  reason      String
+  patientId   String
+  patientName String
+  createdAt   DateTime @default(now())
+  patient     Patient  @relation(fields: [patientId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  meta      String?
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}

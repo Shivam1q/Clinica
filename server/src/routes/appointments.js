@@ -1,37 +1,41 @@
-const {
-  appointments,
-  nextId,
-  formattedTime,
-  patients,
-} = require("../data/seed");
+const prisma = require("../lib/prisma");
 const httpError = require("../middleware/httpError");
 
-const getAppointments = (_req, res, next) => {
+const getAppointments = async (_req, res, next) => {
   try {
+    const appointments = await prisma.appointment.findMany({
+      orderBy: { createdAt: "asc" },
+    });
     res.status(200).json(appointments);
   } catch (err) {
     next(err);
   }
 };
 
-const createAppointment = (req, res, next) => {
+const createAppointment = async (req, res, next) => {
   try {
     const { time, patientId, patientName, reason } = req.body;
 
-    const patient = patients.find((p) => p.id === patientId);
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+    });
     if (!patient) {
       throw httpError(404, "Patient not found");
     }
 
-    const appointment = {
-      id: nextId("A"),
-      time: time ?? formattedTime(),
-      patientId,
-      patientName: patientName ?? patient.name,
-      reason: reason ?? "",
-    };
+    const appointment = await prisma.appointment.create({
+      data: {
+        time: time ?? new Date().toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
+        patientId,
+        patientName: patientName ?? patient.name,
+        reason: reason ?? "",
+      },
+    });
 
-    appointments.push(appointment);
     res.status(201).json(appointment);
   } catch (err) {
     next(err);

@@ -3,10 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node src/index.js"
+    "start": "node --experimental-strip-types src/index.js",
+    "dev": "node --experimental-strip-types src/index.js",
+    "seed": "node --experimental-strip-types prisma/seed.js",
+    "seed:dev": "NODE_ENV=development node --experimental-strip-types prisma/seed.js"
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.9.1"
   }
 }
