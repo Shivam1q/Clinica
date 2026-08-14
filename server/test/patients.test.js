@@ -75,16 +75,15 @@ describe("patients API", () => {
 
       // Act
       const res = await request(app).post("/api/patients").send(payload);
+      const inDb = await prisma.patient.findUnique({
+        where: { id: res.body.id },
+      });
 
       // Assert
       expect(res.status).toBe(201);
       expect(res.body).toHaveProperty("id");
       expect(res.body.name).toBe(payload.name);
       expect(res.body.phone).toBe(payload.phone);
-
-      const inDb = await prisma.patient.findUnique({
-        where: { id: res.body.id },
-      });
       expect(inDb).not.toBeNull();
     });
 
