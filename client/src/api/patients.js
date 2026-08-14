@@ -1,25 +1,5 @@
-export async function getPatients() {
-  const response = await fetch("/api/patients");
+import api from "./client";
 
-  if (!response.ok) {
-    throw new Error("Failed to load patients. Is json-server running?");
-  }
+export const getPatients = () => api.get("/patients");
 
-  return response.json();
-}
-
-export async function createPatient(patient) {
-  const response = await fetch("/api/patients", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(patient),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to create patient.");
-  }
-
-  return response.json();
-}
+export const createPatient = (patient) => api.post("/patients", patient);

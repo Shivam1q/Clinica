@@ -1,13 +1,12 @@
 import httpError from "./httpError.js";
+import { readAuthToken } from "../lib/authCookie.js";
 import { verifyToken } from "../lib/jwt.js";
 
 const requireAuth = (req, _res, next) => {
   try {
-    const header = req.headers.authorization || "";
-    const [scheme, token] = header.split(" ");
-
-    if (scheme !== "Bearer" || !token) {
-      throw httpError(401, "Missing or invalid Authorization header");
+    const token = readAuthToken(req);
+    if (!token) {
+      throw httpError(401, "Missing or invalid session");
     }
 
     const payload = verifyToken(token);

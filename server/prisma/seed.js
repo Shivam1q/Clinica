@@ -1,5 +1,8 @@
 import "dotenv/config";
+import bcrypt from "bcrypt";
 import prisma from "../src/lib/prisma.js";
+
+const DOCTOR_PASSWORD = "clinica123";
 
 const clean = async () => {
   await prisma.auditLog.deleteMany();
@@ -14,7 +17,7 @@ const seed = async () => {
     data: {
       email: "doctor@clinica.local",
       name: "Dr. Kavya Rao",
-      passwordHash: "dev-only-placeholder",
+      passwordHash: await bcrypt.hash(DOCTOR_PASSWORD, 10),
       role: "doctor",
     },
   });
@@ -91,7 +94,7 @@ const seed = async () => {
   });
 
   console.log("Seeded:");
-  console.log("- 1 doctor:", doctor.email);
+  console.log("- 1 doctor:", doctor.email, `(password: ${DOCTOR_PASSWORD})`);
   console.log("- 3 patients:", aarav.name, priya.name, neha.name);
   console.log("- 2 visits, 2 appointments, 1 audit log");
 };

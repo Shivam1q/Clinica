@@ -1,66 +1,17 @@
-import { useEffect, useState } from "react";
-import Dashboard from "./components/Dashboard";
-import { getPatients, createPatient } from "./api/patients";
-import { todaysAppointments, visits } from "./data/mock";
+import { Navigate, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardPage from "./pages/DashboardPage";
+import LoginPage from "./pages/LoginPage";
 
-const App = () => {
-  const [patients, setPatients] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadPatients() {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const data = await getPatients();
-        if (!cancelled) {
-          setPatients(data);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError(
-            err.message ||
-              "Could not reach the API. Is json-server running?",
-          );
-          setPatients([]);
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadPatients();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const handleAddPatient = async (patient) => {
-    const created = await createPatient(patient);
-    setPatients((current) => [...current, created]);
-    return created;
-  };
-
-  return (
-    <Dashboard
-      patients={patients}
-      onAddPatient={handleAddPatient}
-      todaysAppointments={todaysAppointments}
-      visits={visits}
-      query={query}
-      setQuery={setQuery}
-      isLoading={isLoading}
-      error={error}
-    />
-  );
-};
+const App = () => (
+  <Routes>
+    <Route path="/login" element={<LoginPage />} />
+    <Route element={<ProtectedRoute />}>
+      <Route path="/dashboard" element={<DashboardPage />} />
+    </Route>
+    <Route path="/" element={<Navigate to="/dashboard" replace />} />
+    <Route path="*" element={<Navigate to="/dashboard" replace />} />
+  </Routes>
+);
 
 export default App;

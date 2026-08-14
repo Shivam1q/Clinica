@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import AppointmentRow from "./AppointmentRow";
 import PatientTimeline from "./PatientTimeline";
 import VisitNotePanel from "./VisitNotePanel";
@@ -15,9 +17,16 @@ const Dashboard = ({
   isLoading,
   error,
 }) => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
 
   const normalizedQuery = query.trim().toLowerCase();
   const filteredPatients = patients.filter((patient) => {
@@ -41,8 +50,20 @@ const Dashboard = ({
   return (
     <main className="dashboard">
       <header className="dashboard-header">
-        <h1>Clinica</h1>
-        <p>{todayLabel}</p>
+        <div>
+          <h1>Clinica</h1>
+          <p>
+            {todayLabel}
+            {user?.name ? ` · ${user.name}` : ""}
+          </p>
+        </div>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleLogout}
+        >
+          Log out
+        </button>
       </header>
 
       <div className="dashboard-grid">

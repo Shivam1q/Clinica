@@ -2,6 +2,7 @@ import prisma from "../lib/prisma.js";
 import bcrypt from "bcrypt";
 import httpError from "../middleware/httpError.js";
 import { signToken } from "../lib/jwt.js";
+import { clearAuthCookie, setAuthCookie } from "../lib/authCookie.js";
 
 const publicUser = (user) => ({
   id: user.id,
@@ -9,6 +10,11 @@ const publicUser = (user) => ({
   email: user.email,
   role: user.role,
 });
+
+const startSession = (res, user) => {
+  setAuthCookie(res, signToken(user));
+  return publicUser(user);
+};
 
 export const register = async (req, res, next) => {
   try {
@@ -24,10 +30,7 @@ export const register = async (req, res, next) => {
       },
     });
 
-    res.status(201).json({
-      token: signToken(user),
-      user: publicUser(user),
-    });
+    res.status(201).json({ user: startSession(res, user) });
   } catch (err) {
     if (err.code === "P2002") {
       return next(httpError(409, "Email already exists."));
@@ -51,13 +54,15 @@ export const login = async (req, res, next) => {
       throw httpError(401, "Invalid email or password");
     }
 
-    res.status(200).json({
-      token: signToken(user),
-      user: publicUser(user),
-    });
+    res.status(200).json({ user: startSession(res, user) });
   } catch (err) {
     next(err);
   }
+};
+
+export const logout = (_req, res) => {
+  clearAuthCookie(res);
+  res.status(204).end();
 };
 
 export const me = async (req, res, next) => {

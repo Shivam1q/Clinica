@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cookieParser from "cookie-parser";
 import logger from "./middleware/logger.js";
 import notFound from "./middleware/notFound.js";
 import errorHandler from "./middleware/errorHandler.js";
@@ -13,6 +14,7 @@ const app = express();
 
 app.use(logger);
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/health", healthRouter);
 app.use("/api/patients", patientsRouter);
