@@ -1,4 +1,4 @@
-const httpError = require("./httpError");
+import httpError from "./httpError.js";
 
 const validateVisit = (req, _res, next) => {
   try {
@@ -11,4 +11,4 @@ const validateVisit = (req, _res, next) => {
   }
 };
 
-module.exports = validateVisit;
+export default validateVisit;

@@ -169,11 +169,11 @@ const formattedTime = () => {
   return new Date().toLocaleTimeString("en-US", options);
 };
 
-module.exports = {
+export {
   patients,
   visits,
   appointments,
   nextId,
   formattedDate,
-  formattedTime
+  formattedTime,
 };

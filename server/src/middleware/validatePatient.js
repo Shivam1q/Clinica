@@ -1,4 +1,4 @@
-const httpError = require("./httpError");
+import httpError from "./httpError.js";
 
 const validatePatient = (req, _res, next) => {
   try {
@@ -27,4 +27,4 @@ const validatePatient = (req, _res, next) => {
   }
 };
 
-module.exports = validatePatient;
+export default validatePatient;

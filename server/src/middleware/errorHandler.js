@@ -1,6 +1,4 @@
 const errorHandler = (err, _req, res, _next) => {
-  console.error(err);
-
   if (err.type === "entity.parse.failed") {
     return res.status(400).json({ error: "Malformed JSON body" });
   }
@@ -10,10 +8,14 @@ const errorHandler = (err, _req, res, _next) => {
   }
 
   const status = err.status || err.statusCode || 500;
+  if (status >= 500) {
+    console.error(err);
+  }
+
   const message =
     status === 500 ? "Internal server error" : err.message || "Request failed";
 
   res.status(status).json({ error: message });
 };
 
-module.exports = errorHandler;
+export default errorHandler;

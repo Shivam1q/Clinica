@@ -1,5 +1,5 @@
-require("dotenv").config();
-const prisma = require("../src/lib/prisma");
+import "dotenv/config";
+import prisma from "../src/lib/prisma.js";
 
 const clean = async () => {
   await prisma.auditLog.deleteMany();

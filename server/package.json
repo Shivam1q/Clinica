@@ -2,11 +2,12 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node --experimental-strip-types src/index.js",
     "dev": "node --experimental-strip-types src/index.js",
     "seed": "node --experimental-strip-types prisma/seed.js",
-    "seed:dev": "NODE_ENV=development node --experimental-strip-types prisma/seed.js"
+    "test": "NODE_ENV=test node --experimental-strip-types ./node_modules/vitest/vitest.mjs run"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
@@ -16,6 +17,8 @@
     "pg": "^8.23.0"
   },
   "devDependencies": {
-    "prisma": "^7.9.1"
+    "prisma": "^7.9.1",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.10"
   }
 }
