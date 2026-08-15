@@ -34,8 +34,8 @@ const VisitNotePanel = ({
       });
       setSummary("");
       onClose();
-    } catch (err) {
-      setError(err.message || "Could not save visit.");
+    } catch {
+      // API failure already surfaces as a global error toast.
     } finally {
       setIsSaving(false);
     }

@@ -370,6 +370,49 @@ body {
   font-size: 0.9rem;
 }
 
+.toast-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: grid;
+  gap: 8px;
+  width: min(90vw, 340px);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 14px rgba(26, 31, 43, 0.12);
+}
+
+.toast-success {
+  background: #e8f6ee;
+  color: #146c43;
+  border: 1px solid #bfe5cf;
+}
+
+.toast-error {
+  background: #fdecec;
+  color: #9b1c1c;
+  border: 1px solid #f3c6c6;
+}
+
+.toast-dismiss {
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
 .login-page {
   min-height: 100vh;
   display: grid;

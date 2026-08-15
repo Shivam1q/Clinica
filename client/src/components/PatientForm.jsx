@@ -5,7 +5,6 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
   const [phone, setPhone] = useState("");
   const [age, setAge] = useState("");
   const [formError, setFormError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const resetFields = () => {
@@ -16,7 +15,6 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSuccessMessage("");
 
     const trimmedName = name.trim();
     const digitsOnlyPhone = phone.replace(/\D/g, "");
@@ -42,16 +40,14 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
 
     try {
       await onAddPatient({
-        id: `P${Date.now()}`,
         name: trimmedName,
         phone: digitsOnlyPhone,
         age: parsedAge ?? "",
         lastVisit: "—",
       });
-      setSuccessMessage("Patient added successfully.");
       resetFields();
-    } catch (err) {
-      setFormError(err.message || "Could not save patient. Is json-server running?");
+    } catch {
+      // API failure already surfaces as a global error toast.
     } finally {
       setIsSubmitting(false);
     }
@@ -75,7 +71,6 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
             onChange={(e) => {
               setName(e.target.value);
               setFormError("");
-              setSuccessMessage("");
             }}
             placeholder="Full name"
             autoComplete="name"
@@ -94,7 +89,6 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
             onChange={(e) => {
               setAge(e.target.value);
               setFormError("");
-              setSuccessMessage("");
             }}
             placeholder="Optional"
           />
@@ -112,7 +106,6 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
             onChange={(e) => {
               setPhone(e.target.value);
               setFormError("");
-              setSuccessMessage("");
             }}
             placeholder="10-digit phone"
             autoComplete="tel"
@@ -120,7 +113,6 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
         </div>
 
         {formError ? <p className="form-error">{formError}</p> : null}
-        {successMessage ? <p className="form-success">{successMessage}</p> : null}
 
         <button type="submit" className="btn" disabled={disabled || isSubmitting}>
           {isSubmitting ? "Saving…" : "Add patient"}

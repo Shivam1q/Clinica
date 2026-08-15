@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { notify } from "../store/notificationStore";
 
 const LoginPage = () => {
   const { login, isAuthenticated, isReady } = useAuth();
@@ -23,7 +24,9 @@ const LoginPage = () => {
       await login(email.trim(), password);
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError(err.message || "Could not sign in.");
+      const message = err.message || "Could not sign in.";
+      setError(message);
+      notify.error(message);
     } finally {
       setIsSubmitting(false);
     }

@@ -31,7 +31,9 @@ test("doctor can log in, create a patient, and add a visit", async ({
   await page.getByLabel("Phone").fill(phone);
   await page.getByRole("button", { name: "Add patient" }).click();
 
-  await expect(page.getByText("Patient added successfully.")).toBeVisible();
+  await expect(
+    page.locator(".toast-success", { hasText: `Patient added: ${patientName}` }),
+  ).toBeVisible();
   await expect(countLabel).toHaveText(`${beforeCount + 1} on file`);
   await page.locator(".patient-card", { hasText: patientName }).click();
 
@@ -43,5 +45,12 @@ test("doctor can log in, create a patient, and add a visit", async ({
   await page.getByLabel("Draft note").fill(visitSummary);
   await page.getByRole("button", { name: "Save visit" }).click();
 
+  await expect(
+    page.locator(".toast-success", { hasText: "Visit note saved." }),
+  ).toBeVisible();
   await expect(page.locator(".visit-summary", { hasText: visitSummary })).toBeVisible();
+
+  await page.getByRole("button", { name: "Log out" }).click();
+  await expect(page).toHaveURL(/\/login/);
+  await expect(page.locator(".toast")).toHaveCount(0);
 });

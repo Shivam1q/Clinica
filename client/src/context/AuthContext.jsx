@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getMe, loginRequest, logoutRequest } from "../api/auth";
+import { useNotificationStore } from "../store/notificationStore";
 
 const AuthContext = createContext(null);
 
@@ -56,6 +57,7 @@ export const AuthProvider = ({ children }) => {
       await logoutRequest();
     } finally {
       setUser(null);
+      useNotificationStore.getState().clear();
     }
   };
 
