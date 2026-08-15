@@ -15,7 +15,12 @@ const errorHandler = (err, _req, res, _next) => {
   const message =
     status === 500 ? "Internal server error" : err.message || "Request failed";
 
-  res.status(status).json({ error: message });
+  const payload = { error: message };
+  if (err.fields) {
+    payload.fields = err.fields;
+  }
+
+  res.status(status).json(payload);
 };
 
 export default errorHandler;

@@ -60,6 +60,16 @@ describe("visits API", () => {
       expect(res.body).toHaveProperty("error");
     });
 
+    it("returns 400 with field errors when patientId is not a string", async () => {
+      const payload = { patientId: 123, summary: "Bad id type" };
+
+      const res = await request(app).post("/api/visits").send(payload);
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe("Validation failed");
+      expect(res.body.fields).toHaveProperty("patientId");
+    });
+
     it("returns 404 when patientId does not exist", async () => {
       // Arrange
       const payload = {

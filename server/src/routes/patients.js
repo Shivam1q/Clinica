@@ -1,5 +1,6 @@
 import { Router } from "express";
-import validatePatient from "../middleware/validatePatient.js";
+import { validateBody } from "../middleware/validate.ts";
+import { createPatientSchema } from "../schemas/patient.ts";
 import {
   getAllPatients,
   getPatient,
@@ -9,7 +10,7 @@ import {
 const router = Router();
 
 router.get("/", getAllPatients);
-router.post("/", validatePatient, createPatient);
+router.post("/", validateBody(createPatientSchema), createPatient);
 router.get("/:id", getPatient);
 
 export default router;

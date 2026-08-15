@@ -138,5 +138,26 @@ describe("patients API", () => {
       expect(res.status).toBe(400);
       expect(res.body).toHaveProperty("error");
     });
+
+    it("returns 400 with field errors when name is empty", async () => {
+      const payload = { name: "", phone: "9123456789" };
+
+      const res = await request(app).post("/api/patients").send(payload);
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe("Validation failed");
+      expect(res.body.fields).toHaveProperty("name");
+    });
+
+    it("returns 400 with field errors when types are wrong", async () => {
+      const payload = { name: 42, phone: 9876543210 };
+
+      const res = await request(app).post("/api/patients").send(payload);
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe("Validation failed");
+      expect(res.body.fields).toHaveProperty("name");
+      expect(res.body.fields).toHaveProperty("phone");
+    });
   });
 });

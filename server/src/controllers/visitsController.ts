@@ -1,4 +1,5 @@
-import type { CreateVisitInput, Visit } from "@clinica/shared";
+import type { Visit } from "@clinica/shared";
+import type { CreateVisitBody } from "../schemas/visit.ts";
 import type { NextFunction, Request, Response } from "express";
 import prisma from "../lib/prisma.js";
 import { serializeVisit } from "../lib/serialize.ts";
@@ -20,7 +21,7 @@ export const getVisits = async (
 };
 
 export const createVisit = async (
-  req: Request<unknown, Visit, CreateVisitInput>,
+  req: Request<unknown, Visit, CreateVisitBody>,
   res: Response<Visit>,
   next: NextFunction,
 ) => {

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import validateAppointment from "../middleware/validateAppointment.js";
+import { validateBody } from "../middleware/validate.ts";
+import { createAppointmentSchema } from "../schemas/appointment.ts";
 import {
   getAppointments,
   createAppointment,
@@ -8,6 +9,6 @@ import {
 const router = Router();
 
 router.get("/", getAppointments);
-router.post("/", validateAppointment, createAppointment);
+router.post("/", validateBody(createAppointmentSchema), createAppointment);
 
 export default router;

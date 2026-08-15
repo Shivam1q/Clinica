@@ -1,4 +1,5 @@
-import type { Appointment, CreateAppointmentInput } from "@clinica/shared";
+import type { Appointment } from "@clinica/shared";
+import type { CreateAppointmentBody } from "../schemas/appointment.ts";
 import type { NextFunction, Request, Response } from "express";
 import prisma from "../lib/prisma.js";
 import { serializeAppointment } from "../lib/serialize.ts";
@@ -20,7 +21,7 @@ export const getAppointments = async (
 };
 
 export const createAppointment = async (
-  req: Request<unknown, Appointment, CreateAppointmentInput>,
+  req: Request<unknown, Appointment, CreateAppointmentBody>,
   res: Response<Appointment>,
   next: NextFunction,
 ) => {

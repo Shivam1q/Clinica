@@ -1,4 +1,5 @@
-import type { CreatePatientInput, Patient } from "@clinica/shared";
+import type { Patient } from "@clinica/shared";
+import type { CreatePatientBody } from "../schemas/patient.ts";
 import type { NextFunction, Request, Response } from "express";
 import prisma from "../lib/prisma.js";
 import { serializePatient } from "../lib/serialize.ts";
@@ -38,7 +39,7 @@ export const getPatient = async (
 };
 
 export const createPatient = async (
-  req: Request<unknown, Patient, CreatePatientInput>,
+  req: Request<unknown, Patient, CreatePatientBody>,
   res: Response<Patient>,
   next: NextFunction,
 ) => {
@@ -48,7 +49,7 @@ export const createPatient = async (
     const patient = await prisma.patient.create({
       data: {
         name,
-        age: age === undefined || age === "" ? 0 : parseInt(String(age), 10),
+        age: age ?? 0,
         phone,
         lastVisit: lastVisit ?? null,
       },
