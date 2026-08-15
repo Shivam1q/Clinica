@@ -63,6 +63,12 @@ body {
   margin-bottom: 12px;
 }
 
+.patient-count {
+  margin-right: auto;
+  color: #5b6472;
+  font-size: 0.9rem;
+}
+
 .section-heading-row h2 {
   margin: 0;
 }

@@ -1,31 +1,49 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useAppointmentsQuery } from "../hooks/queries/useAppointmentsQuery";
+import {
+  useCreatePatient,
+  usePatientsQuery,
+} from "../hooks/queries/usePatientsQuery";
+import {
+  useCreateVisit,
+  useVisitsQuery,
+} from "../hooks/queries/useVisitsQuery";
 import AppointmentRow from "./AppointmentRow";
-import PatientTimeline from "./PatientTimeline";
-import VisitNotePanel from "./VisitNotePanel";
+import PatientCount from "./PatientCount";
 import PatientForm from "./PatientForm";
 import PatientList from "./PatientList";
+import PatientTimeline from "./PatientTimeline";
+import VisitNotePanel from "./VisitNotePanel";
 
-const Dashboard = ({
-  patients,
-  todaysAppointments,
-  visits,
-  onAddPatient,
-  onAddVisit,
-  query,
-  setQuery,
-  isLoading,
-  error,
-}) => {
+const Dashboard = () => {
   const { user, logout } = useAuth();
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const patientsQuery = usePatientsQuery();
+  const visitsQuery = useVisitsQuery();
+  const appointmentsQuery = useAppointmentsQuery();
+  const createPatient = useCreatePatient();
+  const createVisit = useCreateVisit();
+
+  const patients = patientsQuery.data ?? [];
+  const visits = visitsQuery.data ?? [];
+  const appointments = appointmentsQuery.data ?? [];
+  const isLoading = patientsQuery.isPending;
+  const error =
+    patientsQuery.error || visitsQuery.error || appointmentsQuery.error;
 
   const handleLogout = async () => {
     await logout();
     window.location.replace("/login");
   };
+
+  const handleAddPatient = (patient) => createPatient.mutateAsync(patient);
+
+  const handleAddVisit = (visit) => createVisit.mutateAsync(visit);
 
   const normalizedQuery = query.trim().toLowerCase();
   const filteredPatients = patients.filter((patient) => {
@@ -68,14 +86,21 @@ const Dashboard = ({
       <div className="dashboard-grid">
         <section className="dashboard-section">
           <h2>Today&apos;s schedule</h2>
-          {todaysAppointments.map((appointment) => (
-            <AppointmentRow key={appointment.id} appointment={appointment} />
-          ))}
+          {appointmentsQuery.isPending ? (
+            <p className="loading-state">Loading schedule…</p>
+          ) : appointments.length === 0 ? (
+            <p className="empty-state">No appointments on file.</p>
+          ) : (
+            appointments.map((appointment) => (
+              <AppointmentRow key={appointment.id} appointment={appointment} />
+            ))
+          )}
         </section>
 
         <section className="dashboard-section">
           <div className="section-heading-row">
             <h2>Patients</h2>
+            <PatientCount />
             <button
               type="button"
               className="btn"
@@ -88,12 +113,15 @@ const Dashboard = ({
 
           {error ? (
             <p className="api-error" role="alert">
-              {error}
+              {error.message || "Could not reach the API."}
             </p>
           ) : null}
 
           {showAddForm ? (
-            <PatientForm onAddPatient={onAddPatient} disabled={Boolean(error)} />
+            <PatientForm
+              onAddPatient={handleAddPatient}
+              disabled={Boolean(error)}
+            />
           ) : null}
 
           {isLoading ? (
@@ -121,7 +149,7 @@ const Dashboard = ({
         isNoteOpen={isNoteOpen}
         onOpen={() => setIsNoteOpen(true)}
         onClose={() => setIsNoteOpen(false)}
-        onAddVisit={onAddVisit}
+        onAddVisit={handleAddVisit}
       />
     </main>
   );

@@ -19,12 +19,20 @@ test("doctor can log in, create a patient, and add a visit", async ({
   await expect(page).toHaveURL(/\/dashboard/);
   await expect(page.getByRole("button", { name: "Log out" })).toBeVisible();
 
+  const countLabel = page.locator(".patient-count");
+  await expect(page.getByText("Loading patients…")).toHaveCount(0);
+  await expect(countLabel).toContainText("on file");
+  const beforeCount = Number(
+    (await countLabel.textContent())?.match(/\d+/)?.[0] ?? "0",
+  );
+
   await page.getByRole("button", { name: "Add patient" }).click();
   await page.getByLabel("Name").fill(patientName);
   await page.getByLabel("Phone").fill(phone);
   await page.getByRole("button", { name: "Add patient" }).click();
 
   await expect(page.getByText("Patient added successfully.")).toBeVisible();
+  await expect(countLabel).toHaveText(`${beforeCount + 1} on file`);
   await page.locator(".patient-card", { hasText: patientName }).click();
 
   await expect(
