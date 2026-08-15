@@ -1,3 +1,15 @@
+const formatVisitDate = (value) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return String(value ?? "");
+  }
+  return date.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
+
 const PatientTimeline = ({ patients, selectedPatientId, visits }) => {
   const patient = patients.find((p) => p.id === selectedPatientId);
   const notes = visits.filter((visit) => visit.patientId === selectedPatientId);
@@ -26,7 +38,7 @@ const PatientTimeline = ({ patients, selectedPatientId, visits }) => {
             <ul className="visit-list">
               {notes.map((visit) => (
                 <li key={visit.id}>
-                  <span className="visit-date">{visit.date}</span>
+                  <span className="visit-date">{formatVisitDate(visit.date)}</span>
                   <span className="visit-summary">{visit.summary}</span>
                 </li>
               ))}

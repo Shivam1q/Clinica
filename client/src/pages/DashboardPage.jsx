@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import Dashboard from "../components/Dashboard";
 import { getPatients, createPatient } from "../api/patients";
-import { todaysAppointments, visits } from "../data/mock";
+import { getVisits, createVisit } from "../api/visits";
+import { todaysAppointments } from "../data/mock";
 
 const DashboardPage = () => {
   const [patients, setPatients] = useState([]);
+  const [visits, setVisits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
@@ -12,19 +14,24 @@ const DashboardPage = () => {
   useEffect(() => {
     let cancelled = false;
 
-    async function loadPatients() {
+    async function loadDashboard() {
       setIsLoading(true);
       setError(null);
 
       try {
-        const data = await getPatients();
+        const [patientData, visitData] = await Promise.all([
+          getPatients(),
+          getVisits(),
+        ]);
         if (!cancelled) {
-          setPatients(data);
+          setPatients(patientData);
+          setVisits(visitData);
         }
       } catch (err) {
         if (!cancelled) {
           setError(err.message || "Could not reach the API.");
           setPatients([]);
+          setVisits([]);
         }
       } finally {
         if (!cancelled) {
@@ -33,7 +40,7 @@ const DashboardPage = () => {
       }
     }
 
-    loadPatients();
+    loadDashboard();
 
     return () => {
       cancelled = true;
@@ -46,12 +53,19 @@ const DashboardPage = () => {
     return created;
   };
 
+  const handleAddVisit = async (visit) => {
+    const created = await createVisit(visit);
+    setVisits((current) => [created, ...current]);
+    return created;
+  };
+
   return (
     <Dashboard
       patients={patients}
-      onAddPatient={handleAddPatient}
-      todaysAppointments={todaysAppointments}
       visits={visits}
+      onAddPatient={handleAddPatient}
+      onAddVisit={handleAddVisit}
+      todaysAppointments={todaysAppointments}
       query={query}
       setQuery={setQuery}
       isLoading={isLoading}

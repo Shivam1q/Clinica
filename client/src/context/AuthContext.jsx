@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     let cancelled = false;
 
-    async function restoreSession() {
+    async function refreshSession() {
       try {
         const profile = await getMe();
         if (!cancelled) {
@@ -27,10 +27,21 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
-    restoreSession();
+    refreshSession();
+
+    const onPageShow = (event) => {
+      if (event.persisted) {
+        refreshSession();
+      }
+    };
+
+    window.addEventListener("pageshow", onPageShow);
+    window.addEventListener("popstate", refreshSession);
 
     return () => {
       cancelled = true;
+      window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("popstate", refreshSession);
     };
   }, []);
 

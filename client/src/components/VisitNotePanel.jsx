@@ -1,4 +1,46 @@
-const VisitNotePanel = ({ selectedPatientId, isNoteOpen, onOpen, onClose }) => {
+import { useState } from "react";
+
+const VisitNotePanel = ({
+  selectedPatientId,
+  isNoteOpen,
+  onOpen,
+  onClose,
+  onAddVisit,
+}) => {
+  const [summary, setSummary] = useState("");
+  const [error, setError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleClose = () => {
+    setSummary("");
+    setError("");
+    onClose();
+  };
+
+  const handleSave = async () => {
+    const trimmed = summary.trim();
+    if (!trimmed) {
+      setError("Write a visit note before saving.");
+      return;
+    }
+
+    setIsSaving(true);
+    setError("");
+
+    try {
+      await onAddVisit({
+        patientId: selectedPatientId,
+        summary: trimmed,
+      });
+      setSummary("");
+      onClose();
+    } catch (err) {
+      setError(err.message || "Could not save visit.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <section className="visit-note-panel">
       <h2>Visit notes</h2>
@@ -26,10 +68,36 @@ const VisitNotePanel = ({ selectedPatientId, isNoteOpen, onOpen, onClose }) => {
             className="visit-note-textarea"
             rows={5}
             placeholder="Write visit notes here…"
+            value={summary}
+            disabled={isSaving}
+            onChange={(event) => {
+              setSummary(event.target.value);
+              setError("");
+            }}
           />
-          <button type="button" className="btn btn-secondary" onClick={onClose}>
-            Close
-          </button>
+          {error ? (
+            <p className="form-error" role="alert">
+              {error}
+            </p>
+          ) : null}
+          <div className="visit-note-buttons">
+            <button
+              type="button"
+              className="btn"
+              onClick={handleSave}
+              disabled={isSaving}
+            >
+              {isSaving ? "Saving…" : "Save visit"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleClose}
+              disabled={isSaving}
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </section>

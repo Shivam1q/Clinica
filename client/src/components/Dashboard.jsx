@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AppointmentRow from "./AppointmentRow";
 import PatientTimeline from "./PatientTimeline";
@@ -12,20 +11,20 @@ const Dashboard = ({
   todaysAppointments,
   visits,
   onAddPatient,
+  onAddVisit,
   query,
   setQuery,
   isLoading,
   error,
 }) => {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
 
   const handleLogout = async () => {
     await logout();
-    navigate("/login", { replace: true });
+    window.location.replace("/login");
   };
 
   const normalizedQuery = query.trim().toLowerCase();
@@ -122,6 +121,7 @@ const Dashboard = ({
         isNoteOpen={isNoteOpen}
         onOpen={() => setIsNoteOpen(true)}
         onClose={() => setIsNoteOpen(false)}
+        onAddVisit={onAddVisit}
       />
     </main>
   );
