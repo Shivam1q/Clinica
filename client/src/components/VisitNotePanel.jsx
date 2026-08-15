@@ -1,15 +1,10 @@
 import { useState } from "react";
+import { useVisits } from "../hooks/useVisits";
 
-const VisitNotePanel = ({
-  selectedPatientId,
-  isNoteOpen,
-  onOpen,
-  onClose,
-  onAddVisit,
-}) => {
+const VisitNotePanel = ({ selectedPatientId, isNoteOpen, onOpen, onClose }) => {
+  const { createVisit, isCreating } = useVisits(selectedPatientId);
   const [summary, setSummary] = useState("");
   const [error, setError] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
 
   const handleClose = () => {
     setSummary("");
@@ -24,11 +19,10 @@ const VisitNotePanel = ({
       return;
     }
 
-    setIsSaving(true);
     setError("");
 
     try {
-      await onAddVisit({
+      await createVisit({
         patientId: selectedPatientId,
         summary: trimmed,
       });
@@ -36,8 +30,6 @@ const VisitNotePanel = ({
       onClose();
     } catch {
       // API failure already surfaces as a global error toast.
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -69,7 +61,7 @@ const VisitNotePanel = ({
             rows={5}
             placeholder="Write visit notes here…"
             value={summary}
-            disabled={isSaving}
+            disabled={isCreating}
             onChange={(event) => {
               setSummary(event.target.value);
               setError("");
@@ -85,15 +77,15 @@ const VisitNotePanel = ({
               type="button"
               className="btn"
               onClick={handleSave}
-              disabled={isSaving}
+              disabled={isCreating}
             >
-              {isSaving ? "Saving…" : "Save visit"}
+              {isCreating ? "Saving…" : "Save visit"}
             </button>
             <button
               type="button"
               className="btn btn-secondary"
               onClick={handleClose}
-              disabled={isSaving}
+              disabled={isCreating}
             >
               Close
             </button>

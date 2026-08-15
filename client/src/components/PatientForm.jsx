@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { usePatients } from "../hooks/usePatients";
 
-const PatientForm = ({ onAddPatient, disabled = false }) => {
+const PatientForm = ({ disabled = false }) => {
+  const { createPatient, isCreating } = usePatients();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [age, setAge] = useState("");
   const [formError, setFormError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const resetFields = () => {
     setName("");
@@ -35,11 +36,10 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
       return;
     }
 
-    setIsSubmitting(true);
     setFormError("");
 
     try {
-      await onAddPatient({
+      await createPatient({
         name: trimmedName,
         phone: digitsOnlyPhone,
         age: parsedAge ?? "",
@@ -48,8 +48,6 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
       resetFields();
     } catch {
       // API failure already surfaces as a global error toast.
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -67,7 +65,7 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
             name="name"
             type="text"
             value={name}
-            disabled={disabled || isSubmitting}
+            disabled={disabled || isCreating}
             onChange={(e) => {
               setName(e.target.value);
               setFormError("");
@@ -85,7 +83,7 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
             type="text"
             inputMode="numeric"
             value={age}
-            disabled={disabled || isSubmitting}
+            disabled={disabled || isCreating}
             onChange={(e) => {
               setAge(e.target.value);
               setFormError("");
@@ -102,7 +100,7 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
             type="text"
             inputMode="tel"
             value={phone}
-            disabled={disabled || isSubmitting}
+            disabled={disabled || isCreating}
             onChange={(e) => {
               setPhone(e.target.value);
               setFormError("");
@@ -114,8 +112,8 @@ const PatientForm = ({ onAddPatient, disabled = false }) => {
 
         {formError ? <p className="form-error">{formError}</p> : null}
 
-        <button type="submit" className="btn" disabled={disabled || isSubmitting}>
-          {isSubmitting ? "Saving…" : "Add patient"}
+        <button type="submit" className="btn" disabled={disabled || isCreating}>
+          {isCreating ? "Saving…" : "Add patient"}
         </button>
       </form>
     </section>

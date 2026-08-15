@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createPatient, getPatients } from "../../api/patients";
+import { createPatient, getPatient, getPatients } from "../../api/patients";
 import { notify } from "../../store/notificationStore";
 import { queryKeys } from "./queryKeys";
 
@@ -9,6 +9,22 @@ export const usePatientsQuery = () =>
     queryFn: getPatients,
   });
 
+export const usePatientQuery = (id) => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: queryKeys.patient(id),
+    queryFn: () => getPatient(id),
+    enabled: Boolean(id),
+    initialData: () => {
+      const list = queryClient.getQueryData(queryKeys.patients);
+      return list?.find((patient) => patient.id === id);
+    },
+    initialDataUpdatedAt: () =>
+      queryClient.getQueryState(queryKeys.patients)?.dataUpdatedAt,
+  });
+};
+
 export const useCreatePatient = () => {
   const queryClient = useQueryClient();
 
@@ -16,6 +32,7 @@ export const useCreatePatient = () => {
     mutationFn: createPatient,
     onSuccess: (patient) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.patients });
+      queryClient.setQueryData(queryKeys.patient(patient.id), patient);
       notify.success(`Patient added: ${patient.name}`);
     },
     onError: (error) => {

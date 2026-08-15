@@ -1,9 +1,9 @@
-import { usePatientsQuery } from "../hooks/queries/usePatientsQuery";
+import { usePatients } from "../hooks/usePatients";
 
 const PatientCount = () => {
-  const { data: patients = [], isPending } = usePatientsQuery();
+  const { patients, isLoading } = usePatients();
 
-  if (isPending) {
+  if (isLoading) {
     return <span className="patient-count">…</span>;
   }
 

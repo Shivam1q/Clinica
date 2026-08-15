@@ -1,14 +1,7 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useAppointmentsQuery } from "../hooks/queries/useAppointmentsQuery";
-import {
-  useCreatePatient,
-  usePatientsQuery,
-} from "../hooks/queries/usePatientsQuery";
-import {
-  useCreateVisit,
-  useVisitsQuery,
-} from "../hooks/queries/useVisitsQuery";
+import { useAppointments } from "../hooks/useAppointments";
+import { useAuth } from "../hooks/useAuth";
+import { useFilteredPatients } from "../hooks/useFilteredPatients";
 import AppointmentRow from "./AppointmentRow";
 import PatientCount from "./PatientCount";
 import PatientForm from "./PatientForm";
@@ -23,35 +16,24 @@ const Dashboard = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [query, setQuery] = useState("");
 
-  const patientsQuery = usePatientsQuery();
-  const visitsQuery = useVisitsQuery();
-  const appointmentsQuery = useAppointmentsQuery();
-  const createPatient = useCreatePatient();
-  const createVisit = useCreateVisit();
+  const {
+    patients,
+    filteredPatients,
+    isLoading: patientsLoading,
+    error: patientsError,
+  } = useFilteredPatients(query);
+  const {
+    appointments,
+    isLoading: appointmentsLoading,
+    error: appointmentsError,
+  } = useAppointments();
 
-  const patients = patientsQuery.data ?? [];
-  const visits = visitsQuery.data ?? [];
-  const appointments = appointmentsQuery.data ?? [];
-  const isLoading = patientsQuery.isPending;
-  const error =
-    patientsQuery.error || visitsQuery.error || appointmentsQuery.error;
+  const error = patientsError || appointmentsError;
 
   const handleLogout = async () => {
     await logout();
     window.location.replace("/login");
   };
-
-  const handleAddPatient = (patient) => createPatient.mutateAsync(patient);
-
-  const handleAddVisit = (visit) => createVisit.mutateAsync(visit);
-
-  const normalizedQuery = query.trim().toLowerCase();
-  const filteredPatients = patients.filter((patient) => {
-    if (!normalizedQuery) return true;
-    const name = patient.name.toLowerCase();
-    const phone = String(patient.phone);
-    return name.includes(normalizedQuery) || phone.includes(normalizedQuery);
-  });
 
   const handleSelectPatient = (id) => {
     setSelectedPatientId(id);
@@ -86,7 +68,7 @@ const Dashboard = () => {
       <div className="dashboard-grid">
         <section className="dashboard-section">
           <h2>Today&apos;s schedule</h2>
-          {appointmentsQuery.isPending ? (
+          {appointmentsLoading ? (
             <p className="loading-state">Loading schedule…</p>
           ) : appointments.length === 0 ? (
             <p className="empty-state">No appointments on file.</p>
@@ -105,7 +87,7 @@ const Dashboard = () => {
               type="button"
               className="btn"
               onClick={() => setShowAddForm((open) => !open)}
-              disabled={isLoading}
+              disabled={patientsLoading}
             >
               {showAddForm ? "Hide form" : "Add patient"}
             </button>
@@ -117,14 +99,9 @@ const Dashboard = () => {
             </p>
           ) : null}
 
-          {showAddForm ? (
-            <PatientForm
-              onAddPatient={handleAddPatient}
-              disabled={Boolean(error)}
-            />
-          ) : null}
+          {showAddForm ? <PatientForm disabled={Boolean(error)} /> : null}
 
-          {isLoading ? (
+          {patientsLoading ? (
             <p className="loading-state">Loading patients…</p>
           ) : (
             <PatientList
@@ -139,17 +116,12 @@ const Dashboard = () => {
         </section>
       </div>
 
-      <PatientTimeline
-        selectedPatientId={selectedPatientId}
-        patients={patients}
-        visits={visits}
-      />
+      <PatientTimeline selectedPatientId={selectedPatientId} />
       <VisitNotePanel
         selectedPatientId={selectedPatientId}
         isNoteOpen={isNoteOpen}
         onOpen={() => setIsNoteOpen(true)}
         onClose={() => setIsNoteOpen(false)}
-        onAddVisit={handleAddVisit}
       />
     </main>
   );
