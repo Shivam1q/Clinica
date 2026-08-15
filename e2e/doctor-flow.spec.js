@@ -18,6 +18,7 @@ test("doctor can log in, create a patient, and add a visit", async ({
 
   await expect(page).toHaveURL(/\/dashboard/);
   await expect(page.getByRole("button", { name: "Log out" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
 
   const countLabel = page.locator(".patient-count");
   await expect(page.getByText("Loading patients…")).toHaveCount(0);
@@ -37,6 +38,7 @@ test("doctor can log in, create a patient, and add a visit", async ({
   await expect(countLabel).toHaveText(`${beforeCount + 1} on file`);
   await page.locator(".patient-card", { hasText: patientName }).click();
 
+  await expect(page).toHaveURL(/\/patients\//);
   await expect(
     page.locator(".patient-timeline").getByRole("heading", { name: patientName }),
   ).toBeVisible();

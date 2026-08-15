@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { notify } from "../store/notificationStore";
 
 const LoginPage = () => {
   const { login, isAuthenticated, isReady } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo =
+    location.state?.from && location.state.from !== "/login"
+      ? location.state.from
+      : "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (isReady && isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={redirectTo} replace />;
   }
 
   const handleSubmit = async (event) => {
@@ -22,7 +27,7 @@ const LoginPage = () => {
 
     try {
       await login(email.trim(), password);
-      navigate("/dashboard", { replace: true });
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       const message = err.message || "Could not sign in.";
       setError(message);
