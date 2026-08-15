@@ -1,18 +1,29 @@
+import type { Appointment, CreateAppointmentInput } from "@clinica/shared";
+import type { NextFunction, Request, Response } from "express";
 import prisma from "../lib/prisma.js";
+import { serializeAppointment } from "../lib/serialize.ts";
 import httpError from "../middleware/httpError.js";
 
-const getAppointments = async (_req, res, next) => {
+export const getAppointments = async (
+  _req: Request,
+  res: Response<Appointment[]>,
+  next: NextFunction,
+) => {
   try {
     const appointments = await prisma.appointment.findMany({
       orderBy: { createdAt: "asc" },
     });
-    res.status(200).json(appointments);
+    res.status(200).json(appointments.map(serializeAppointment));
   } catch (err) {
     next(err);
   }
 };
 
-const createAppointment = async (req, res, next) => {
+export const createAppointment = async (
+  req: Request<unknown, Appointment, CreateAppointmentInput>,
+  res: Response<Appointment>,
+  next: NextFunction,
+) => {
   try {
     const { time, patientId, patientName, reason } = req.body;
 
@@ -38,10 +49,8 @@ const createAppointment = async (req, res, next) => {
       },
     });
 
-    res.status(201).json(appointment);
+    res.status(201).json(serializeAppointment(appointment));
   } catch (err) {
     next(err);
   }
 };
-
-export { getAppointments, createAppointment };

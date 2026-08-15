@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "test:e2e": "playwright test",
-    "playwright:install": "playwright install chromium"
+    "playwright:install": "playwright install chromium",
+    "typecheck": "npm run typecheck --prefix packages/shared && npm run typecheck --prefix client && npm run typecheck --prefix server"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.1"

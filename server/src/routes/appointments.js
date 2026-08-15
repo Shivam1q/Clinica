@@ -3,7 +3,7 @@ import validateAppointment from "../middleware/validateAppointment.js";
 import {
   getAppointments,
   createAppointment,
-} from "../controllers/appointmentsController.js";
+} from "../controllers/appointmentsController.ts";
 
 const router = Router();
 

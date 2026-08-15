@@ -2,7 +2,7 @@ import { Router } from "express";
 import validateRegister from "../middleware/validateRegister.js";
 import validateLogin from "../middleware/validateLogin.js";
 import requireAuth from "../middleware/requireAuth.js";
-import { register, login, logout, me } from "../controllers/authController.js";
+import { register, login, logout, me } from "../controllers/authController.ts";
 
 const router = Router();
 

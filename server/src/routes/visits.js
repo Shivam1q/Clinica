@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validateVisit from "../middleware/validateVisit.js";
-import { getVisits, createVisit } from "../controllers/visitsController.js";
+import { getVisits, createVisit } from "../controllers/visitsController.ts";
 
 const router = Router();
 

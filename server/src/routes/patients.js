@@ -4,7 +4,7 @@ import {
   getAllPatients,
   getPatient,
   createPatient,
-} from "../controllers/patientsController.js";
+} from "../controllers/patientsController.ts";
 
 const router = Router();
 
